@@ -2,7 +2,7 @@ use crate::{
     algebra::Vec2,
     detection_narrow_phase::detect_collision_circle_and_circle,
     detection_narrow_phase::CollisionInfo,
-    shape::{Circle, ParticleLike, Rectangle, Shape, Wall},
+    shape::{Circle, ParticleLike, Rectangle, Bounded, Wall},
 };
 
 const POSITION_SLOT: f32 = 0.01;

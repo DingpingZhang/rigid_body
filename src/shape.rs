@@ -30,7 +30,7 @@ pub trait ParticleLike {
     fn particle(&self) -> &Particle;
 }
 
-pub trait Shape {
+pub trait Bounded {
     fn bound_left(&self) -> f32;
     fn bound_top(&self) -> f32;
     fn bound_right(&self) -> f32;
@@ -78,7 +78,7 @@ impl Circle {
     }
 }
 
-impl Shape for Circle {
+impl Bounded for Circle {
     fn bound_left(&self) -> f32 {
         self.particle.position.x - self.radius
     }
@@ -157,7 +157,7 @@ impl Rectangle {
     }
 }
 
-impl Shape for Rectangle {
+impl Bounded for Rectangle {
     fn bound_left(&self) -> f32 {
         self.particle.position.x - self.bound_width() / 2.0
     }

@@ -1,4 +1,4 @@
-use crate::shape::Shape;
+use crate::shape::Bounded;
 use std::{collections::HashSet, usize};
 
 #[derive(Clone, Copy)]
@@ -18,7 +18,7 @@ struct ShapeBoundPoint {
     is_start: bool,
 }
 
-pub fn detect_by_broad_phase(shapes: &Vec<&impl Shape>) -> Vec<ShapeIndexPair> {
+pub fn detect_by_broad_phase(shapes: &Vec<&impl Bounded>) -> Vec<ShapeIndexPair> {
     let x_axis_results = detect_axis_by_broad_phase(
         shapes,
         |shape| shape.bound_left(),
@@ -43,9 +43,9 @@ pub fn detect_by_broad_phase(shapes: &Vec<&impl Shape>) -> Vec<ShapeIndexPair> {
 }
 
 fn detect_axis_by_broad_phase(
-    shapes: &Vec<&impl Shape>,
-    get_min: impl Fn(&dyn Shape) -> f32,
-    get_max: impl Fn(&dyn Shape) -> f32,
+    shapes: &Vec<&impl Bounded>,
+    get_min: impl Fn(&dyn Bounded) -> f32,
+    get_max: impl Fn(&dyn Bounded) -> f32,
 ) -> Vec<ShapeIndexPair> {
     let mut points: Vec<ShapeBoundPoint> = Vec::new();
     for i in 0..shapes.len() {

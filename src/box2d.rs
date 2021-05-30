@@ -1,11 +1,11 @@
 use crate::{
     detection_broad_phase::{detect_by_broad_phase, ShapeIndexPair},
-    shape::{Particle, ParticleLike, RigidBody, Shape, Wall},
+    shape::{Particle, ParticleLike, RigidBody, Bounded, Wall},
 };
 
 pub struct Box<T>
 where
-    T: RigidBody + Shape + ParticleLike,
+    T: RigidBody + Bounded + ParticleLike,
 {
     pub wall_left: Wall,
     pub wall_top: Wall,
@@ -16,7 +16,7 @@ where
 
 impl<T> Box<T>
 where
-    T: RigidBody + Shape + ParticleLike,
+    T: RigidBody + Bounded + ParticleLike,
 {
     pub fn next_frame(&mut self, duration: f32) {
         for shape in self.shapes.iter_mut() {
