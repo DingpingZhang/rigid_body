@@ -50,7 +50,7 @@ pub struct Wall {
 }
 
 impl RigidBody for Wall {
-    fn collide(&mut self, other: &mut impl RigidBody) {
+    fn collide_with(&mut self, other: &mut impl RigidBody) {
         other.collide_with_wall(self);
     }
 
@@ -97,7 +97,7 @@ impl Bounded for Circle {
 }
 
 impl RigidBody for Circle {
-    fn collide(&mut self, other: &mut impl RigidBody) {
+    fn collide_with(&mut self, other: &mut impl RigidBody) {
         other.collide_with_circle(self);
     }
 
@@ -132,7 +132,7 @@ pub struct Rectangle {
 }
 
 pub trait RigidBody {
-    fn collide(&mut self, other: &mut impl RigidBody);
+    fn collide_with(&mut self, other: &mut impl RigidBody);
     fn collide_with_wall(&mut self, body: &Wall);
     fn collide_with_circle(&mut self, body: &mut Circle);
     fn collide_with_rectangle(&mut self, body: &mut Rectangle);
@@ -176,7 +176,7 @@ impl Bounded for Rectangle {
 }
 
 impl RigidBody for Rectangle {
-    fn collide(&mut self, other: &mut impl RigidBody) {
+    fn collide_with(&mut self, other: &mut impl RigidBody) {
         other.collide_with_rectangle(self);
     }
 

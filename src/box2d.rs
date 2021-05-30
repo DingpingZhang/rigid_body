@@ -25,14 +25,14 @@ where
 
         for index_pair in detect_by_broad_phase(&self.shapes.iter().collect()) {
             let (shape1, shape2) = self.get_shape_pair_mut(index_pair);
-            shape1.collide(shape2);
+            shape1.collide_with(shape2);
         }
 
         for shape in self.shapes.iter_mut() {
-            shape.collide(&mut self.wall_left);
-            shape.collide(&mut self.wall_top);
-            shape.collide(&mut self.wall_right);
-            shape.collide(&mut self.wall_bottom);
+            shape.collide_with(&mut self.wall_left);
+            shape.collide_with(&mut self.wall_top);
+            shape.collide_with(&mut self.wall_right);
+            shape.collide_with(&mut self.wall_bottom);
         }
     }
 
