@@ -24,7 +24,7 @@ pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
             return;
         }
 
-        let restitution = min_f32(p1.restitution, p2.restitution);
+        let restitution = min(p1.restitution, p2.restitution);
         let impulse_scalar =
             -(1.0 + restitution) * rel_vel_along_normal / (p1.inverse_mass() + p2.inverse_mass());
         let impulse = normal * impulse_scalar;
@@ -116,7 +116,7 @@ pub fn collide_wall_and_rectangle(_wall: &Wall, _rect: &mut Rectangle) {
     todo!()
 }
 
-fn min_f32(a: f32, b: f32) -> f32 {
+fn min<T: PartialOrd>(a: T, b: T) -> T {
     if a < b {
         a
     } else {

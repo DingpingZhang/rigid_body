@@ -23,10 +23,6 @@ impl Particle {
             f32::INFINITY
         }
     }
-
-    pub fn next_frame(&mut self) {
-        
-    }
 }
 
 pub trait ParticleLike {
