@@ -6,13 +6,36 @@ use crate::{
     },
 };
 
+pub trait ParticleLike {
+    fn particle_mut(&mut self) -> &mut Particle;
+    fn particle(&self) -> &Particle;
+}
+
+pub trait MaterialLike {
+    fn material_mut(&mut self) -> &mut Material;
+    fn material(&self) -> &Material;
+}
+
+pub trait Bounded {
+    fn bound_left(&self) -> f32;
+    fn bound_top(&self) -> f32;
+    fn bound_right(&self) -> f32;
+    fn bound_bottom(&self) -> f32;
+}
+
+pub trait RigidBody {
+    fn collide_with(&mut self, other: &mut impl RigidBody);
+    fn collide_with_wall(&mut self, body: &Wall);
+    fn collide_with_circle(&mut self, body: &mut Circle);
+    fn collide_with_rectangle(&mut self, body: &mut Rectangle);
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct Particle {
     pub mass: f32,
     pub position: Vec2,
     pub velocity: Vec2,
     pub acceleration: Vec2,
-    pub restitution: f32,
 }
 
 impl Particle {
@@ -25,16 +48,9 @@ impl Particle {
     }
 }
 
-pub trait ParticleLike {
-    fn particle_mut(&mut self) -> &mut Particle;
-    fn particle(&self) -> &Particle;
-}
-
-pub trait Bounded {
-    fn bound_left(&self) -> f32;
-    fn bound_top(&self) -> f32;
-    fn bound_right(&self) -> f32;
-    fn bound_bottom(&self) -> f32;
+#[derive(Debug, Clone, Copy)]
+pub struct Material {
+    pub restitution: f32,
 }
 
 pub enum Orientation {
@@ -45,8 +61,19 @@ pub enum Orientation {
 }
 
 pub struct Wall {
+    material: Material,
     pub bound: f32,
     pub orientation: Orientation,
+}
+
+impl Wall {
+    pub fn new(material: Material, bound: f32, orientation: Orientation) -> Self {
+        Self {
+            material,
+            bound,
+            orientation,
+        }
+    }
 }
 
 impl RigidBody for Wall {
@@ -67,14 +94,29 @@ impl RigidBody for Wall {
     }
 }
 
+impl MaterialLike for Wall {
+    fn material_mut(&mut self) -> &mut Material {
+        &mut self.material
+    }
+
+    fn material(&self) -> &Material {
+        &self.material
+    }
+}
+
 pub struct Circle {
+    material: Material,
     particle: Particle,
     pub radius: f32,
 }
 
 impl Circle {
-    pub fn new(particle: Particle, radius: f32) -> Self {
-        Self { particle, radius }
+    pub fn new(material: Material, particle: Particle, radius: f32) -> Self {
+        Self {
+            material,
+            particle,
+            radius,
+        }
     }
 }
 
@@ -124,23 +166,34 @@ impl ParticleLike for Circle {
     }
 }
 
+impl MaterialLike for Circle {
+    fn material_mut(&mut self) -> &mut Material {
+        &mut self.material
+    }
+
+    fn material(&self) -> &Material {
+        &self.material
+    }
+}
+
 pub struct Rectangle {
+    material: Material,
     particle: Particle,
     pub width: f32,
     pub height: f32,
     pub angle: f32,
 }
 
-pub trait RigidBody {
-    fn collide_with(&mut self, other: &mut impl RigidBody);
-    fn collide_with_wall(&mut self, body: &Wall);
-    fn collide_with_circle(&mut self, body: &mut Circle);
-    fn collide_with_rectangle(&mut self, body: &mut Rectangle);
-}
-
 impl Rectangle {
-    pub fn new(particle: Particle, width: f32, height: f32, angle: f32) -> Self {
+    pub fn new(
+        material: Material,
+        particle: Particle,
+        width: f32,
+        height: f32,
+        angle: f32,
+    ) -> Self {
         Self {
+            material,
             particle,
             width,
             height,
@@ -193,8 +246,22 @@ impl RigidBody for Rectangle {
     }
 }
 
-// impl<'a> ParticleLike<'a> for Rectangle {
-//     fn particle(&'a mut self) -> &'a mut Particle {
-//         &mut self.particle
-//     }
-// }
+impl ParticleLike for Rectangle {
+    fn particle_mut(&mut self) -> &mut Particle {
+        &mut self.particle
+    }
+
+    fn particle(&self) -> &Particle {
+        &self.particle
+    }
+}
+
+impl MaterialLike for Rectangle {
+    fn material_mut(&mut self) -> &mut Material {
+        &mut self.material
+    }
+
+    fn material(&self) -> &Material {
+        &self.material
+    }
+}

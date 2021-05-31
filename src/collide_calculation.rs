@@ -2,7 +2,7 @@ use crate::{
     algebra::Vec2,
     detection_narrow_phase::detect_collision_circle_and_circle,
     detection_narrow_phase::CollisionInfo,
-    shape::{Circle, ParticleLike, Rectangle, Bounded, Wall},
+    shape::{Bounded, Circle, MaterialLike, ParticleLike, Rectangle, Wall},
 };
 
 const POSITION_SLOT: f32 = 0.01;
@@ -14,6 +14,10 @@ pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
         normal,
     }) = detect_collision_circle_and_circle(circle1, circle2)
     {
+        let restitution = min(
+            circle1.material().restitution,
+            circle2.material().restitution,
+        );
         let p1 = circle1.particle_mut();
         let p2 = circle2.particle_mut();
 
@@ -24,7 +28,6 @@ pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
             return;
         }
 
-        let restitution = min(p1.restitution, p2.restitution);
         let impulse_scalar =
             -(1.0 + restitution) * rel_vel_along_normal / (p1.inverse_mass() + p2.inverse_mass());
         let impulse = normal * impulse_scalar;
@@ -52,6 +55,7 @@ pub fn collide_rectangle_and_rectange(_rect1: &mut Rectangle, _rect2: &mut Recta
 }
 
 pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
+    let restitution = min(circle.material().restitution, wall.material().restitution);
     match wall.orientation {
         crate::shape::Orientation::Left => {
             if circle.bound_left() < wall.bound {
@@ -62,7 +66,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                     y: p.position.y,
                 };
                 p.velocity = Vec2 {
-                    x: -p.restitution * p.velocity.x,
+                    x: -restitution * p.velocity.x,
                     y: p.velocity.y,
                 };
             }
@@ -77,7 +81,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                 };
                 p.velocity = Vec2 {
                     x: p.velocity.x,
-                    y: -p.restitution * p.velocity.y,
+                    y: -restitution * p.velocity.y,
                 };
             }
         }
@@ -90,7 +94,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                     y: p.position.y,
                 };
                 p.velocity = Vec2 {
-                    x: -p.restitution * p.velocity.x,
+                    x: -restitution * p.velocity.x,
                     y: p.velocity.y,
                 };
             }
@@ -105,7 +109,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                 };
                 p.velocity = Vec2 {
                     x: p.velocity.x,
-                    y: -p.restitution * p.velocity.y,
+                    y: -restitution * p.velocity.y,
                 };
             }
         }
