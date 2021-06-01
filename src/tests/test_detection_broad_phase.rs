@@ -32,7 +32,7 @@ fn test_detect_by_broad_phase_circle() {
 
     // 两圆相交
     {
-        let circles = vec![&circle1, &circle2];
+        let circles = vec![&circle2, &circle1];
         let results = detect_by_broad_phase(&circles);
 
         assert_eq!(results.len(), 1);
@@ -60,7 +60,7 @@ fn test_detect_by_broad_phase_circle() {
     // 宽检测通过，窄检测不通过
     {
         circle2.particle_mut().position = Vec2::new(25.0, 25.0);
-        let circles = vec![&circle1, &circle2];
+        let circles = vec![&circle2, &circle1];
         let results = detect_by_broad_phase(&circles);
 
         assert_eq!(results.len(), 1);
