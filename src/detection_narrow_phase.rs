@@ -1,6 +1,6 @@
 use crate::{
     algebra::Vec2,
-    shape::{Circle, ParticleLike},
+    shapes::{Circle, ParticleLike},
 };
 
 pub struct CollisionInfo {

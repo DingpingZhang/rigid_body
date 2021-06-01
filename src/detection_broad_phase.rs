@@ -1,4 +1,4 @@
-use crate::shape::Bounded;
+use crate::shapes::Bounded;
 use std::{collections::HashSet, usize};
 
 #[derive(Clone, Copy)]

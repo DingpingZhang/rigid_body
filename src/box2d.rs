@@ -1,6 +1,6 @@
 use crate::{
     detection_broad_phase::{detect_by_broad_phase, ShapeIndexPair},
-    shape::{Bounded, Particle, ParticleLike, RigidBody, Wall},
+    shapes::{Bounded, Particle, ParticleLike, RigidBody, Wall},
 };
 
 pub struct Box<T>

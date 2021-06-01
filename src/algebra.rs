@@ -1,5 +1,7 @@
 use std::ops::{Add, Div, Mul, Sub};
 
+pub const FLOADT_TOLERANCE: f32 = 1e-6;
+
 #[derive(Debug, Clone, Copy)]
 pub struct Vec2 {
     pub x: f32,
@@ -7,10 +9,22 @@ pub struct Vec2 {
 }
 
 impl Vec2 {
+    pub fn new(x: f32, y: f32) -> Self {
+        Self { x, y }
+    }
+
     pub fn length_squared(self) -> f32 {
         self.x * self.x + self.y + self.y
     }
 }
+
+impl PartialEq for Vec2 {
+    fn eq(&self, other: &Self) -> bool {
+        (self.x - other.x).abs() < FLOADT_TOLERANCE && (self.y - other.y).abs() < FLOADT_TOLERANCE
+    }
+}
+
+impl Eq for Vec2 {}
 
 impl Add for Vec2 {
     type Output = Self;

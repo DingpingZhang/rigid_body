@@ -2,7 +2,7 @@ use crate::{
     algebra::Vec2,
     detection_narrow_phase::detect_collision_circle_and_circle,
     detection_narrow_phase::CollisionInfo,
-    shape::{Bounded, Circle, MaterialLike, ParticleLike, Rectangle, Wall},
+    shapes::{Bounded, Circle, MaterialLike, Orientation, ParticleLike, Rectangle, Wall},
 };
 
 const POSITION_SLOT: f32 = 0.01;
@@ -57,7 +57,7 @@ pub fn collide_rectangle_and_rectange(_rect1: &mut Rectangle, _rect2: &mut Recta
 pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
     let restitution = min(circle.material().restitution, wall.material().restitution);
     match wall.orientation {
-        crate::shape::Orientation::Left => {
+        Orientation::Left => {
             if circle.bound_left() < wall.bound {
                 let r = circle.radius;
                 let mut p = circle.particle_mut();
@@ -71,7 +71,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                 };
             }
         }
-        crate::shape::Orientation::Top => {
+        Orientation::Top => {
             if circle.bound_top() > wall.bound {
                 let r = circle.radius;
                 let mut p = circle.particle_mut();
@@ -85,7 +85,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                 };
             }
         }
-        crate::shape::Orientation::Right => {
+        Orientation::Right => {
             if circle.bound_right() > wall.bound {
                 let r = circle.radius;
                 let mut p = circle.particle_mut();
@@ -99,7 +99,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
                 };
             }
         }
-        crate::shape::Orientation::Bottom => {
+        Orientation::Bottom => {
             if circle.bound_bottom() < wall.bound {
                 let r = circle.radius;
                 let mut p = circle.particle_mut();
