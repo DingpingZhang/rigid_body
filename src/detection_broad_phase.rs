@@ -1,7 +1,7 @@
 use crate::shapes::Bounded;
 use std::{collections::HashSet, usize};
 
-#[derive(Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub struct ShapeIndexPair(pub usize, pub usize);
 
 impl PartialEq for ShapeIndexPair {
