@@ -2,6 +2,10 @@ use std::ops::{Add, Div, Mul, Sub};
 
 pub const FLOADT_TOLERANCE: f32 = 1e-6;
 
+pub fn equals_float(x: f32, y: f32) -> bool {
+    (x - y).abs() < FLOADT_TOLERANCE
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct Vec2 {
     pub x: f32,
@@ -14,13 +18,13 @@ impl Vec2 {
     }
 
     pub fn length_squared(self) -> f32 {
-        self.x * self.x + self.y + self.y
+        self.x * self.x + self.y * self.y
     }
 }
 
 impl PartialEq for Vec2 {
     fn eq(&self, other: &Self) -> bool {
-        (self.x - other.x).abs() < FLOADT_TOLERANCE && (self.y - other.y).abs() < FLOADT_TOLERANCE
+        equals_float(self.x, other.x) && equals_float(self.y, other.y)
     }
 }
 
