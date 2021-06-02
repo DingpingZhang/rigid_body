@@ -1,5 +1,8 @@
 use crate::algebra::Vec2;
 
+#[cfg(test)]
+mod tests;
+
 mod circle;
 pub use self::circle::Circle;
 

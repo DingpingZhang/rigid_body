@@ -6,6 +6,14 @@ pub fn equals_float(x: f32, y: f32) -> bool {
     (x - y).abs() < FLOADT_TOLERANCE
 }
 
+pub fn min<T: PartialOrd>(a: T, b: T) -> T {
+    if a < b {
+        a
+    } else {
+        b
+    }
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct Vec2 {
     pub x: f32,

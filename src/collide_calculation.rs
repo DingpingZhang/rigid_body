@@ -1,5 +1,5 @@
 use crate::{
-    algebra::Vec2,
+    algebra::{min, Vec2},
     detection_narrow_phase::detect_collision_circle_and_circle,
     detection_narrow_phase::CollisionInfo,
     shapes::{Bounded, Circle, MaterialLike, Orientation, ParticleLike, Rectangle, Wall},
@@ -32,8 +32,8 @@ pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
             -(1.0 + restitution) * rel_vel_along_normal / (p1.inverse_mass() + p2.inverse_mass());
         let impulse = normal * impulse_scalar;
 
-        p1.velocity = p1.velocity - impulse * p1.inverse_mass();
-        p2.velocity = p2.velocity + impulse * p2.inverse_mass();
+        p1.velocity = p1.velocity - (impulse * p1.inverse_mass());
+        p2.velocity = p2.velocity + (impulse * p2.inverse_mass());
 
         if penetration > POSITION_SLOT {
             let correction = normal
@@ -118,12 +118,4 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
 
 pub fn collide_wall_and_rectangle(_wall: &Wall, _rect: &mut Rectangle) {
     todo!()
-}
-
-fn min<T: PartialOrd>(a: T, b: T) -> T {
-    if a < b {
-        a
-    } else {
-        b
-    }
 }
