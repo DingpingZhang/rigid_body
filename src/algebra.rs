@@ -1,8 +1,8 @@
 use std::ops::{Add, Div, Mul, Sub};
 
-pub const FLOADT_TOLERANCE: f32 = 1e-6;
+pub const FLOADT_TOLERANCE: f64 = 1e-6;
 
-pub fn equals_float(x: f32, y: f32) -> bool {
+pub fn equals_float(x: f64, y: f64) -> bool {
     (x - y).abs() < FLOADT_TOLERANCE
 }
 
@@ -16,16 +16,16 @@ pub fn min<T: PartialOrd>(a: T, b: T) -> T {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vec2 {
-    pub x: f32,
-    pub y: f32,
+    pub x: f64,
+    pub y: f64,
 }
 
 impl Vec2 {
-    pub fn new(x: f32, y: f32) -> Self {
+    pub fn new(x: f64, y: f64) -> Self {
         Self { x, y }
     }
 
-    pub fn length_squared(self) -> f32 {
+    pub fn length_squared(self) -> f64 {
         self.x * self.x + self.y * self.y
     }
 }
@@ -61,17 +61,17 @@ impl Sub for Vec2 {
 }
 
 impl Mul for Vec2 {
-    type Output = f32;
+    type Output = f64;
 
     fn mul(self, rhs: Self) -> Self::Output {
         self.x * rhs.x + self.y * rhs.y
     }
 }
 
-impl Mul<f32> for Vec2 {
+impl Mul<f64> for Vec2 {
     type Output = Vec2;
 
-    fn mul(self, rhs: f32) -> Self::Output {
+    fn mul(self, rhs: f64) -> Self::Output {
         Self {
             x: self.x * rhs,
             y: self.y * rhs,
@@ -79,10 +79,10 @@ impl Mul<f32> for Vec2 {
     }
 }
 
-impl Div<f32> for Vec2 {
+impl Div<f64> for Vec2 {
     type Output = Vec2;
 
-    fn div(self, rhs: f32) -> Self::Output {
+    fn div(self, rhs: f64) -> Self::Output {
         Self {
             x: self.x / rhs,
             y: self.y / rhs,

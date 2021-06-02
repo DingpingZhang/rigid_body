@@ -18,7 +18,7 @@ impl<T> Box<T>
 where
     T: RigidBody + Bounded + ParticleLike,
 {
-    pub fn next_frame(&mut self, duration: f32) {
+    pub fn next_frame(&mut self, duration: f64) {
         for shape in self.shapes.iter_mut() {
             drive_particle(shape.particle_mut(), duration);
         }
@@ -44,7 +44,7 @@ where
     }
 }
 
-fn drive_particle(particle: &mut Particle, duration: f32) {
+fn drive_particle(particle: &mut Particle, duration: f64) {
     particle.position = particle.position
         + particle.velocity * duration
         + particle.acceleration * (duration * duration) / 2.0;

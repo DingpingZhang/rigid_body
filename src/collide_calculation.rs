@@ -5,8 +5,8 @@ use crate::{
     shapes::{Bounded, Circle, MaterialLike, Orientation, ParticleLike, Rectangle, Wall},
 };
 
-const POSITION_SLOT: f32 = 0.01;
-const POSITION_CORRECTION_FACTOR: f32 = 0.2;
+const POSITION_SLOT: f64 = 0.01;
+const POSITION_CORRECTION_FACTOR: f64 = 0.2;
 
 pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
     if let Some(CollisionInfo {

@@ -6,18 +6,18 @@ use crate::collide_calculation::{
 pub struct Rectangle {
     material: Material,
     particle: Particle,
-    pub width: f32,
-    pub height: f32,
-    pub angle: f32,
+    pub width: f64,
+    pub height: f64,
+    pub angle: f64,
 }
 
 impl Rectangle {
     pub fn new(
         material: Material,
         particle: Particle,
-        width: f32,
-        height: f32,
-        angle: f32,
+        width: f64,
+        height: f64,
+        angle: f64,
     ) -> Self {
         Self {
             material,
@@ -28,29 +28,29 @@ impl Rectangle {
         }
     }
 
-    fn bound_width(&self) -> f32 {
+    fn bound_width(&self) -> f64 {
         self.height * self.angle.sin().abs() + self.width * self.angle.cos().abs()
     }
 
-    fn bound_height(&self) -> f32 {
+    fn bound_height(&self) -> f64 {
         self.height * self.angle.cos().abs() + self.width * self.angle.sin().abs()
     }
 }
 
 impl Bounded for Rectangle {
-    fn bound_left(&self) -> f32 {
+    fn bound_left(&self) -> f64 {
         self.particle.position.x - self.bound_width() / 2.0
     }
 
-    fn bound_top(&self) -> f32 {
+    fn bound_top(&self) -> f64 {
         self.particle.position.y + self.bound_height() / 2.0
     }
 
-    fn bound_right(&self) -> f32 {
+    fn bound_right(&self) -> f64 {
         self.particle.position.x + self.bound_width() / 2.0
     }
 
-    fn bound_bottom(&self) -> f32 {
+    fn bound_bottom(&self) -> f64 {
         self.particle.position.y - self.bound_height() / 2.0
     }
 }

@@ -6,11 +6,11 @@ use crate::collide_calculation::{
 pub struct Circle {
     material: Material,
     particle: Particle,
-    pub radius: f32,
+    pub radius: f64,
 }
 
 impl Circle {
-    pub fn new(material: Material, particle: Particle, radius: f32) -> Self {
+    pub fn new(material: Material, particle: Particle, radius: f64) -> Self {
         Self {
             material,
             particle,
@@ -20,19 +20,19 @@ impl Circle {
 }
 
 impl Bounded for Circle {
-    fn bound_left(&self) -> f32 {
+    fn bound_left(&self) -> f64 {
         self.particle.position.x - self.radius
     }
 
-    fn bound_top(&self) -> f32 {
+    fn bound_top(&self) -> f64 {
         self.particle.position.y + self.radius
     }
 
-    fn bound_right(&self) -> f32 {
+    fn bound_right(&self) -> f64 {
         self.particle.position.x + self.radius
     }
 
-    fn bound_bottom(&self) -> f32 {
+    fn bound_bottom(&self) -> f64 {
         self.particle.position.y - self.radius
     }
 }

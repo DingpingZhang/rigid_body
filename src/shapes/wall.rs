@@ -3,12 +3,12 @@ use crate::collide_calculation::{collide_wall_and_circle, collide_wall_and_recta
 
 pub struct Wall {
     material: Material,
-    pub bound: f32,
+    pub bound: f64,
     pub orientation: Orientation,
 }
 
 impl Wall {
-    pub fn new(material: Material, bound: f32, orientation: Orientation) -> Self {
+    pub fn new(material: Material, bound: f64, orientation: Orientation) -> Self {
         Self {
             material,
             bound,

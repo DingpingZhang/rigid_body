@@ -14,7 +14,7 @@ impl Eq for ShapeIndexPair {}
 
 struct ShapeBoundPoint {
     index: usize,
-    bound: f32,
+    bound: f64,
     is_start: bool,
 }
 
@@ -44,8 +44,8 @@ pub fn detect_by_broad_phase(shapes: &Vec<&impl Bounded>) -> Vec<ShapeIndexPair>
 
 fn detect_axis_by_broad_phase(
     shapes: &Vec<&impl Bounded>,
-    get_min: impl Fn(&dyn Bounded) -> f32,
-    get_max: impl Fn(&dyn Bounded) -> f32,
+    get_min: impl Fn(&dyn Bounded) -> f64,
+    get_max: impl Fn(&dyn Bounded) -> f64,
 ) -> Vec<ShapeIndexPair> {
     let mut points: Vec<ShapeBoundPoint> = Vec::new();
     for i in 0..shapes.len() {

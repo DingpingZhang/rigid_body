@@ -4,7 +4,7 @@ use crate::{
 };
 
 pub struct CollisionInfo {
-    pub penetration: f32,
+    pub penetration: f64,
     pub normal: Vec2,
 }
 

@@ -44,7 +44,7 @@ fn test_collide_circle_mass_infinity() {
     let v1 = Vec2::new(0.0, 0.0);
     let v2 = Vec2::new(-42.0, 0.0);
     circle1.particle_mut().velocity = v1;
-    circle1.particle_mut().mass = f32::INFINITY;
+    circle1.particle_mut().mass = f64::INFINITY;
 
     circle2.particle_mut().velocity = v2;
 
@@ -55,18 +55,18 @@ fn test_collide_circle_mass_infinity() {
 
 #[test]
 fn test_collide_circle_momentum_and_energy_conservation() {
-    fn random_f32(a: f32, b: f32) -> f32 {
-        (b - a) * random::<f32>() + a
+    fn random_f64(a: f64, b: f64) -> f64 {
+        (b - a) * random::<f64>() + a
     }
 
-    for _ in 0..1000 {
+    for _ in 0..10000 {
         let (mut circle1, mut circle2) = get_two_intersecting_circle();
         circle1.particle_mut().velocity =
-            Vec2::new(random_f32(-100.0, 100.0), random_f32(-100.0, 100.0));
-        circle1.particle_mut().mass = random_f32(FLOADT_TOLERANCE, 100.0);
+            Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
+        circle1.particle_mut().mass = random_f64(FLOADT_TOLERANCE, 100.0);
         circle2.particle_mut().velocity =
-            Vec2::new(random_f32(-100.0, 100.0), random_f32(-100.0, 100.0));
-        circle2.particle_mut().mass = random_f32(FLOADT_TOLERANCE, 100.0);
+            Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
+        circle2.particle_mut().mass = random_f64(FLOADT_TOLERANCE, 100.0);
 
         let momentum_before = get_momentum(circle1.particle(), circle2.particle());
         let kinetic_energy_before = get_kinetic_energy(circle1.particle(), circle2.particle());
@@ -114,6 +114,6 @@ fn get_momentum(p1: &Particle, p2: &Particle) -> Vec2 {
     p1.velocity * p1.mass + p2.velocity * p2.mass
 }
 
-fn get_kinetic_energy(p1: &Particle, p2: &Particle) -> f32 {
+fn get_kinetic_energy(p1: &Particle, p2: &Particle) -> f64 {
     (p1.mass * p1.velocity.length_squared() + p2.mass * p2.velocity.length_squared()) / 2.0
 }
