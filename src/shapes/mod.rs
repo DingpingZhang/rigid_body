@@ -12,6 +12,7 @@ pub use self::rectangle::Rectangle;
 mod wall;
 pub use self::wall::Wall;
 
+#[derive(Debug, Clone, Copy)]
 pub enum Orientation {
     Left,
     Top,
