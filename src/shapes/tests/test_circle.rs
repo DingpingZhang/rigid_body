@@ -2,7 +2,8 @@ use rand::random;
 
 use crate::{
     algebra::{equals_float, Vec2, FLOADT_TOLERANCE},
-    shapes::{Circle, Material, Particle, ParticleLike, RigidBody},
+    detection_narrow_phase::detect_collision_circle_and_circle,
+    shapes::{Bounded, Circle, Material, Particle, ParticleLike, RigidBody},
 };
 
 #[test]
@@ -59,7 +60,7 @@ fn test_collide_circle_momentum_and_energy_conservation() {
         (b - a) * random::<f64>() + a
     }
 
-    for _ in 0..10000 {
+    for _ in 0..100000 {
         let (mut circle1, mut circle2) = get_two_intersecting_circle();
         circle1.particle_mut().velocity =
             Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
@@ -67,10 +68,22 @@ fn test_collide_circle_momentum_and_energy_conservation() {
         circle2.particle_mut().velocity =
             Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
         circle2.particle_mut().mass = random_f64(FLOADT_TOLERANCE, 100.0);
+        let circle2_x = random_f64(
+            circle1.bound_left() - circle2.radius,
+            circle1.bound_right() + circle2.radius,
+        );
+        let sign = if random() { 1.0 } else { -1.0 };
+        let circle2_y = sign
+            * ((circle1.radius + circle2.radius - FLOADT_TOLERANCE).powi(2)
+                - (circle2_x - circle1.particle().position.x).abs().powi(2))
+            .sqrt()
+            + circle1.particle().position.y;
+        circle2.particle_mut().position = Vec2::new(circle2_x, circle2_y);
 
         let momentum_before = get_momentum(circle1.particle(), circle2.particle());
         let kinetic_energy_before = get_kinetic_energy(circle1.particle(), circle2.particle());
 
+        assert!(detect_collision_circle_and_circle(&circle1, &circle2).is_some());
         circle1.collide_with(&mut circle2);
 
         let momentum_after = get_momentum(circle1.particle(), circle2.particle());
@@ -100,11 +113,11 @@ fn get_two_intersecting_circle() -> (Circle, Circle) {
         Material { restitution: 1.0 },
         Particle {
             mass: 1.0,
-            position: Vec2::new(30.0 - FLOADT_TOLERANCE, 10.0),
+            position: Vec2::new(30.0, 10.0),
             velocity: zero,
             acceleration: zero,
         },
-        10.0,
+        10.0 + FLOADT_TOLERANCE,
     );
 
     (circle1, circle2)
