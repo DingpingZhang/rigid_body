@@ -2,7 +2,7 @@ use rand::random;
 
 use crate::{
     algebra::{Vec2, FLOADT_TOLERANCE},
-    shapes::{Circle, Material, Orientation, Particle, ParticleLike, RigidBody, Wall},
+    shapes::{Circle, Material, Orientation, RigidBody, RigidBodyLike, Collide, Wall},
 };
 
 #[test]
@@ -12,7 +12,7 @@ fn test_collide_circle_and_wall() {
     fn get_circle() -> Circle {
         Circle::new(
             Material { restitution: 1.0 },
-            Particle {
+            RigidBody {
                 mass: 1.0,
                 position: Vec2::new(10.0, 10.0),
                 velocity: Vec2::new(0.0, 0.0),
@@ -29,24 +29,24 @@ fn test_collide_circle_and_wall() {
     fn test_circle_and_wall(wall_bound: f64, wall_orientation: Orientation) {
         let mut circle = get_circle();
         let v = Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
-        circle.particle_mut().velocity = v;
+        circle.rigid_body_mut().velocity = v;
         let mut wall = Wall::new(Material { restitution: 1.0 }, wall_bound, wall_orientation);
 
         // 第一次碰撞：与朝向平行方向上的速度应等大反向，而垂直方向上的速度则不变。
         circle.collide_with(&mut wall);
         match wall_orientation {
             Orientation::Left | Orientation::Right => {
-                assert_eq!(circle.particle().velocity, Vec2::new(-v.x, v.y))
+                assert_eq!(circle.rigid_body().velocity, Vec2::new(-v.x, v.y))
             }
             Orientation::Top | Orientation::Bottom => {
-                assert_eq!(circle.particle().velocity, Vec2::new(v.x, -v.y))
+                assert_eq!(circle.rigid_body().velocity, Vec2::new(v.x, -v.y))
             }
         }
 
         // 第二次碰撞：第一次碰撞应当完全解决碰撞冲突，故第二次碰撞前后速度保持不变。
-        let v_before = circle.particle().velocity;
+        let v_before = circle.rigid_body().velocity;
         circle.collide_with(&mut wall);
-        assert_eq!(circle.particle().velocity, v_before);
+        assert_eq!(circle.rigid_body().velocity, v_before);
     }
 
     for _ in 0..10000 {

@@ -2,7 +2,7 @@ use crate::{
     algebra::{min, Vec2},
     detection_narrow_phase::detect_collision_circle_and_circle,
     detection_narrow_phase::CollisionInfo,
-    shapes::{Bounded, Circle, MaterialLike, Orientation, ParticleLike, Rectangle, Wall},
+    shapes::{Bounded, Circle, MaterialLike, Orientation, RigidBodyLike, Rectangle, Wall},
 };
 
 const POSITION_SLOT: f64 = 0.01;
@@ -18,8 +18,8 @@ pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
             circle1.material().restitution,
             circle2.material().restitution,
         );
-        let p1 = circle1.particle_mut();
-        let p2 = circle2.particle_mut();
+        let p1 = circle1.rigid_body_mut();
+        let p2 = circle2.rigid_body_mut();
 
         let rel_vel = p2.velocity - p1.velocity;
         let rel_vel_along_normal = rel_vel * normal;
@@ -60,7 +60,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
         Orientation::Left => {
             if circle.bound_left() < wall.bound {
                 let r = circle.radius;
-                let mut p = circle.particle_mut();
+                let mut p = circle.rigid_body_mut();
                 p.position = Vec2 {
                     x: wall.bound + r,
                     y: p.position.y,
@@ -74,7 +74,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
         Orientation::Top => {
             if circle.bound_top() > wall.bound {
                 let r = circle.radius;
-                let mut p = circle.particle_mut();
+                let mut p = circle.rigid_body_mut();
                 p.position = Vec2 {
                     x: p.position.x,
                     y: wall.bound - r,
@@ -88,7 +88,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
         Orientation::Right => {
             if circle.bound_right() > wall.bound {
                 let r = circle.radius;
-                let mut p = circle.particle_mut();
+                let mut p = circle.rigid_body_mut();
                 p.position = Vec2 {
                     x: wall.bound - r,
                     y: p.position.y,
@@ -102,7 +102,7 @@ pub fn collide_wall_and_circle(wall: &Wall, circle: &mut Circle) {
         Orientation::Bottom => {
             if circle.bound_bottom() < wall.bound {
                 let r = circle.radius;
-                let mut p = circle.particle_mut();
+                let mut p = circle.rigid_body_mut();
                 p.position = Vec2 {
                     x: p.position.x,
                     y: wall.bound + r,

@@ -1,11 +1,11 @@
-use super::{Bounded, Circle, Material, MaterialLike, Particle, ParticleLike, RigidBody, Wall};
+use super::{Bounded, Circle, Material, MaterialLike, RigidBody, Collide, RigidBodyLike, Wall};
 use crate::collide_calculation::{
     collide_circle_and_rectangle, collide_rectangle_and_rectange, collide_wall_and_rectangle,
 };
 
 pub struct Rectangle {
     material: Material,
-    particle: Particle,
+    rigid_body: RigidBody,
     pub width: f64,
     pub height: f64,
     pub angle: f64,
@@ -14,14 +14,14 @@ pub struct Rectangle {
 impl Rectangle {
     pub fn new(
         material: Material,
-        particle: Particle,
+        rigid_body: RigidBody,
         width: f64,
         height: f64,
         angle: f64,
     ) -> Self {
         Self {
             material,
-            particle,
+            rigid_body,
             width,
             height,
             angle,
@@ -39,24 +39,24 @@ impl Rectangle {
 
 impl Bounded for Rectangle {
     fn bound_left(&self) -> f64 {
-        self.particle.position.x - self.bound_width() / 2.0
+        self.rigid_body.position.x - self.bound_width() / 2.0
     }
 
     fn bound_top(&self) -> f64 {
-        self.particle.position.y + self.bound_height() / 2.0
+        self.rigid_body.position.y + self.bound_height() / 2.0
     }
 
     fn bound_right(&self) -> f64 {
-        self.particle.position.x + self.bound_width() / 2.0
+        self.rigid_body.position.x + self.bound_width() / 2.0
     }
 
     fn bound_bottom(&self) -> f64 {
-        self.particle.position.y - self.bound_height() / 2.0
+        self.rigid_body.position.y - self.bound_height() / 2.0
     }
 }
 
-impl RigidBody for Rectangle {
-    fn collide_with(&mut self, other: &mut impl RigidBody) {
+impl Collide for Rectangle {
+    fn collide_with(&mut self, other: &mut impl Collide) {
         other.collide_with_rectangle(self);
     }
 
@@ -73,13 +73,13 @@ impl RigidBody for Rectangle {
     }
 }
 
-impl ParticleLike for Rectangle {
-    fn particle_mut(&mut self) -> &mut Particle {
-        &mut self.particle
+impl RigidBodyLike for Rectangle {
+    fn rigid_body_mut(&mut self) -> &mut RigidBody {
+        &mut self.rigid_body
     }
 
-    fn particle(&self) -> &Particle {
-        &self.particle
+    fn rigid_body(&self) -> &RigidBody {
+        &self.rigid_body
     }
 }
 

@@ -1,19 +1,19 @@
-use super::{Bounded, Material, MaterialLike, Particle, ParticleLike, Rectangle, RigidBody, Wall};
+use super::{Bounded, Material, MaterialLike, RigidBody, RigidBodyLike, Rectangle, Collide, Wall};
 use crate::collide_calculation::{
     collide_circle_and_circle, collide_circle_and_rectangle, collide_wall_and_circle,
 };
 
 pub struct Circle {
     material: Material,
-    particle: Particle,
+    rigid_body: RigidBody,
     pub radius: f64,
 }
 
 impl Circle {
-    pub fn new(material: Material, particle: Particle, radius: f64) -> Self {
+    pub fn new(material: Material, rigid_body: RigidBody, radius: f64) -> Self {
         Self {
             material,
-            particle,
+            rigid_body,
             radius,
         }
     }
@@ -21,24 +21,24 @@ impl Circle {
 
 impl Bounded for Circle {
     fn bound_left(&self) -> f64 {
-        self.particle.position.x - self.radius
+        self.rigid_body.position.x - self.radius
     }
 
     fn bound_top(&self) -> f64 {
-        self.particle.position.y + self.radius
+        self.rigid_body.position.y + self.radius
     }
 
     fn bound_right(&self) -> f64 {
-        self.particle.position.x + self.radius
+        self.rigid_body.position.x + self.radius
     }
 
     fn bound_bottom(&self) -> f64 {
-        self.particle.position.y - self.radius
+        self.rigid_body.position.y - self.radius
     }
 }
 
-impl RigidBody for Circle {
-    fn collide_with(&mut self, other: &mut impl RigidBody) {
+impl Collide for Circle {
+    fn collide_with(&mut self, other: &mut impl Collide) {
         other.collide_with_circle(self);
     }
 
@@ -55,13 +55,13 @@ impl RigidBody for Circle {
     }
 }
 
-impl ParticleLike for Circle {
-    fn particle_mut(&mut self) -> &mut Particle {
-        &mut self.particle
+impl RigidBodyLike for Circle {
+    fn rigid_body_mut(&mut self) -> &mut RigidBody {
+        &mut self.rigid_body
     }
 
-    fn particle(&self) -> &Particle {
-        &self.particle
+    fn rigid_body(&self) -> &RigidBody {
+        &self.rigid_body
     }
 }
 

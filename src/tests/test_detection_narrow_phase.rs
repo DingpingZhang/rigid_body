@@ -1,7 +1,7 @@
 use crate::{
     algebra::{equals_float, Vec2, FLOADT_TOLERANCE},
     detection_narrow_phase::detect_collision_circle_and_circle,
-    shapes::{Circle, Material, Particle, ParticleLike},
+    shapes::{Circle, Material, RigidBody, RigidBodyLike},
 };
 
 #[test]
@@ -9,7 +9,7 @@ fn test_detect_collision_circle_and_circle() {
     let zero = Vec2::new(0.0, 0.0);
     let circle1 = Circle::new(
         Material { restitution: 1.0 },
-        Particle {
+        RigidBody {
             mass: 1.0,
             position: Vec2::new(10.0, 10.0),
             velocity: zero,
@@ -19,7 +19,7 @@ fn test_detect_collision_circle_and_circle() {
     );
     let mut circle2 = Circle::new(
         Material { restitution: 1.0 },
-        Particle {
+        RigidBody {
             mass: 1.0,
             position: Vec2::new(30.0, 10.0),
             velocity: zero,
@@ -32,7 +32,7 @@ fn test_detect_collision_circle_and_circle() {
     assert!(detect_collision_circle_and_circle(&circle1, &circle2).is_none());
 
     // 两圆临界相交：穿模深度为 FLOADT_TOLERANCE 时，应当能够被检测出来。
-    circle2.particle_mut().position = Vec2::new(30.0 - FLOADT_TOLERANCE, 10.0);
+    circle2.rigid_body_mut().position = Vec2::new(30.0 - FLOADT_TOLERANCE, 10.0);
     let result = detect_collision_circle_and_circle(&circle1, &circle2);
     assert!(result.is_some());
     let info = result.unwrap();

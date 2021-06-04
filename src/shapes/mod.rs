@@ -27,22 +27,22 @@ pub trait Bounded {
     fn bound_bottom(&self) -> f64;
 }
 
-pub trait RigidBody {
-    fn collide_with(&mut self, other: &mut impl RigidBody);
+pub trait Collide {
+    fn collide_with(&mut self, other: &mut impl Collide);
     fn collide_with_wall(&mut self, body: &Wall);
     fn collide_with_circle(&mut self, body: &mut Circle);
     fn collide_with_rectangle(&mut self, body: &mut Rectangle);
 }
 
 #[derive(Debug, Clone, Copy)]
-pub struct Particle {
+pub struct RigidBody {
     pub mass: f64,
     pub position: Vec2,
     pub velocity: Vec2,
     pub acceleration: Vec2,
 }
 
-impl Particle {
+impl RigidBody {
     pub fn inverse_mass(&self) -> f64 {
         if self.mass > 0.0 {
             1.0 / self.mass
@@ -52,9 +52,9 @@ impl Particle {
     }
 }
 
-pub trait ParticleLike {
-    fn particle_mut(&mut self) -> &mut Particle;
-    fn particle(&self) -> &Particle;
+pub trait RigidBodyLike {
+    fn rigid_body_mut(&mut self) -> &mut RigidBody;
+    fn rigid_body(&self) -> &RigidBody;
 }
 
 #[derive(Debug, Clone, Copy)]

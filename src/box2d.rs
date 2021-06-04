@@ -1,11 +1,11 @@
 use crate::{
     detection_broad_phase::{detect_by_broad_phase, ShapeIndexPair},
-    shapes::{Bounded, Particle, ParticleLike, RigidBody, Wall},
+    shapes::{Bounded, RigidBody, RigidBodyLike, Collide, Wall},
 };
 
 pub struct Box<T>
 where
-    T: RigidBody + Bounded + ParticleLike,
+    T: Collide + Bounded + RigidBodyLike,
 {
     pub wall_left: Wall,
     pub wall_top: Wall,
@@ -16,11 +16,11 @@ where
 
 impl<T> Box<T>
 where
-    T: RigidBody + Bounded + ParticleLike,
+    T: Collide + Bounded + RigidBodyLike,
 {
     pub fn next_frame(&mut self, duration: f64) {
         for shape in self.shapes.iter_mut() {
-            drive_particle(shape.particle_mut(), duration);
+            drive_particle(shape.rigid_body_mut(), duration);
         }
 
         for index_pair in detect_by_broad_phase(&self.shapes.iter().collect()) {
@@ -44,7 +44,7 @@ where
     }
 }
 
-fn drive_particle(particle: &mut Particle, duration: f64) {
+fn drive_particle(particle: &mut RigidBody, duration: f64) {
     particle.position = particle.position
         + particle.velocity * duration
         + particle.acceleration * (duration * duration) / 2.0;

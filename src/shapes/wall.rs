@@ -1,4 +1,4 @@
-use super::{Circle, Material, MaterialLike, Orientation, Rectangle, RigidBody};
+use super::{Circle, Material, MaterialLike, Orientation, Rectangle, Collide};
 use crate::collide_calculation::{collide_wall_and_circle, collide_wall_and_rectangle};
 
 pub struct Wall {
@@ -17,8 +17,8 @@ impl Wall {
     }
 }
 
-impl RigidBody for Wall {
-    fn collide_with(&mut self, other: &mut impl RigidBody) {
+impl Collide for Wall {
+    fn collide_with(&mut self, other: &mut impl Collide) {
         other.collide_with_wall(self);
     }
 
