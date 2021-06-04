@@ -3,7 +3,7 @@ use rand::random;
 use crate::{
     algebra::{equals_float, Vec2, FLOADT_TOLERANCE},
     detection_narrow_phase::detect_collision_circle_and_circle,
-    shapes::{Bounded, Circle, Material, RigidBody, RigidBodyLike, Collide},
+    shapes::{Bounded, Circle, Collide, Material, RigidBody, RigidBodyLike},
 };
 
 #[test]
@@ -60,7 +60,7 @@ fn test_collide_circle_momentum_and_energy_conservation() {
         (b - a) * random::<f64>() + a
     }
 
-    for _ in 0..100000 {
+    for _ in 0..10_000_000 {
         let (mut circle1, mut circle2) = get_two_intersecting_circle();
         circle1.rigid_body_mut().velocity =
             Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
@@ -69,21 +69,23 @@ fn test_collide_circle_momentum_and_energy_conservation() {
             Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
         circle2.rigid_body_mut().mass = random_f64(FLOADT_TOLERANCE, 100.0);
         let circle2_x = random_f64(
-            circle1.bound_left() - circle2.radius,
+            circle1.bound_left() - circle2.radius + FLOADT_TOLERANCE,
             circle1.bound_right() + circle2.radius,
         );
-        let sign = if random() { 1.0 } else { -1.0 };
-        let circle2_y = sign
-            * ((circle1.radius + circle2.radius - FLOADT_TOLERANCE).powi(2)
-                - (circle2_x - circle1.rigid_body().position.x).abs().powi(2))
-            .sqrt()
-            + circle1.rigid_body().position.y;
+        let circle2_y = random_f64(
+            circle1.bound_bottom() - circle2.radius + FLOADT_TOLERANCE,
+            circle1.bound_top() + circle2.radius,
+        );
         circle2.rigid_body_mut().position = Vec2::new(circle2_x, circle2_y);
 
         let momentum_before = get_momentum(circle1.rigid_body(), circle2.rigid_body());
         let kinetic_energy_before = get_kinetic_energy(circle1.rigid_body(), circle2.rigid_body());
 
-        assert!(detect_collision_circle_and_circle(&circle1, &circle2).is_some());
+        assert_eq!(
+            detect_collision_circle_and_circle(&circle1, &circle2).is_some(),
+            (circle1.radius + circle2.radius).powi(2)
+                > (circle1.rigid_body().position - circle2.rigid_body().position).length_squared()
+        );
         circle1.collide_with(&mut circle2);
 
         let momentum_after = get_momentum(circle1.rigid_body(), circle2.rigid_body());
