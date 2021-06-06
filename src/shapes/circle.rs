@@ -1,4 +1,4 @@
-use super::{Bounded, Material, MaterialLike, RigidBody, RigidBodyLike, Rectangle, Collide, Wall};
+use super::{Bounded, Material, MaterialLike, RigidBody, RigidBodyLike, Rectangle, Collider, Wall};
 use crate::collide_calculation::{
     collide_circle_and_circle, collide_circle_and_rectangle, collide_wall_and_circle,
 };
@@ -37,8 +37,8 @@ impl Bounded for Circle {
     }
 }
 
-impl Collide for Circle {
-    fn collide_with(&mut self, other: &mut impl Collide) {
+impl Collider for Circle {
+    fn collide_with(&mut self, other: &mut impl Collider) {
         other.collide_with_circle(self);
     }
 

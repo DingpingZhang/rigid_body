@@ -27,8 +27,8 @@ pub trait Bounded {
     fn bound_bottom(&self) -> f64;
 }
 
-pub trait Collide {
-    fn collide_with(&mut self, other: &mut impl Collide);
+pub trait Collider {
+    fn collide_with(&mut self, other: &mut impl Collider);
     fn collide_with_wall(&mut self, body: &Wall);
     fn collide_with_circle(&mut self, body: &mut Circle);
     fn collide_with_rectangle(&mut self, body: &mut Rectangle);

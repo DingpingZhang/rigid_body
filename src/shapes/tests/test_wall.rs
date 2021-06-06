@@ -2,7 +2,7 @@ use rand::random;
 
 use crate::{
     algebra::{Vec2, FLOADT_TOLERANCE},
-    shapes::{Circle, Material, Orientation, RigidBody, RigidBodyLike, Collide, Wall},
+    shapes::{Circle, Material, Orientation, RigidBody, RigidBodyLike, Collider, Wall},
 };
 
 #[test]

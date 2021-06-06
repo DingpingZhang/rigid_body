@@ -3,7 +3,7 @@ use rand::random;
 use crate::{
     algebra::{equals_float, Vec2, FLOADT_TOLERANCE},
     detection_narrow_phase::detect_collision_circle_and_circle,
-    shapes::{Bounded, Circle, Collide, Material, RigidBody, RigidBodyLike},
+    shapes::{Bounded, Circle, Collider, Material, RigidBody, RigidBodyLike},
 };
 
 #[test]
