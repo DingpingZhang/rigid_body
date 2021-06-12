@@ -1,6 +1,7 @@
 use crate::{
+    algebra::Float,
     detection_broad_phase::{detect_by_broad_phase, ShapeIndexPair},
-    shapes::{Bounded, RigidBody, RigidBodyLike, Collider, Wall},
+    shapes::{Bounded, Collider, RigidBody, RigidBodyLike, Wall},
 };
 
 pub struct Box<T>
@@ -18,7 +19,7 @@ impl<T> Box<T>
 where
     T: Collider + Bounded + RigidBodyLike,
 {
-    pub fn next_frame(&mut self, duration: f64) {
+    pub fn next_frame(&mut self, duration: Float) {
         for shape in self.shapes.iter_mut() {
             drive_particle(shape.rigid_body_mut(), duration);
         }
@@ -44,7 +45,7 @@ where
     }
 }
 
-fn drive_particle(particle: &mut RigidBody, duration: f64) {
+fn drive_particle(particle: &mut RigidBody, duration: Float) {
     particle.position = particle.position
         + particle.velocity * duration
         + particle.acceleration * (duration * duration) / 2.0;

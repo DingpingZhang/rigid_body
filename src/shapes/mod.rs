@@ -1,4 +1,4 @@
-use crate::algebra::Vec2;
+use crate::algebra::{Float, Vec2};
 
 #[cfg(test)]
 mod tests;
@@ -21,10 +21,10 @@ pub enum Orientation {
 }
 
 pub trait Bounded {
-    fn bound_left(&self) -> f64;
-    fn bound_top(&self) -> f64;
-    fn bound_right(&self) -> f64;
-    fn bound_bottom(&self) -> f64;
+    fn bound_left(&self) -> Float;
+    fn bound_top(&self) -> Float;
+    fn bound_right(&self) -> Float;
+    fn bound_bottom(&self) -> Float;
 }
 
 pub trait Collider {
@@ -36,18 +36,27 @@ pub trait Collider {
 
 #[derive(Debug, Clone, Copy)]
 pub struct RigidBody {
-    pub mass: f64,
+    pub mass: Float,
     pub position: Vec2,
     pub velocity: Vec2,
     pub acceleration: Vec2,
 }
 
 impl RigidBody {
-    pub fn inverse_mass(&self) -> f64 {
+    pub fn particle(mass: Float, position: Vec2, velocity: Vec2, acceleration: Vec2) -> Self {
+        Self {
+            mass,
+            position,
+            velocity,
+            acceleration,
+        }
+    }
+
+    pub fn inverse_mass(&self) -> Float {
         if self.mass > 0.0 {
             1.0 / self.mass
         } else {
-            f64::INFINITY
+            Float::INFINITY
         }
     }
 }
@@ -59,7 +68,7 @@ pub trait RigidBodyLike {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Material {
-    pub restitution: f64,
+    pub restitution: Float,
 }
 
 pub trait MaterialLike {

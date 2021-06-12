@@ -1,12 +1,12 @@
 use crate::{
-    algebra::{min, Vec2},
+    algebra::{min, Float, Vec2},
     detection_narrow_phase::detect_collision_circle_and_circle,
     detection_narrow_phase::CollisionInfo,
-    shapes::{Bounded, Circle, MaterialLike, Orientation, RigidBodyLike, Rectangle, Wall},
+    shapes::{Bounded, Circle, MaterialLike, Orientation, Rectangle, RigidBodyLike, Wall},
 };
 
-const POSITION_SLOT: f64 = 0.01;
-const POSITION_CORRECTION_FACTOR: f64 = 0.2;
+const POSITION_SLOT: Float = 0.01;
+const POSITION_CORRECTION_FACTOR: Float = 0.2;
 
 pub fn collide_circle_and_circle(circle1: &mut Circle, circle2: &mut Circle) {
     if let Some(CollisionInfo {

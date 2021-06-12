@@ -1,10 +1,10 @@
 use crate::{
-    algebra::Vec2,
+    algebra::{Float, Vec2},
     shapes::{Circle, RigidBodyLike},
 };
 
 pub struct CollisionInfo {
-    pub penetration: f64,
+    pub penetration: Float,
     pub normal: Vec2,
 }
 

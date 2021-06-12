@@ -1,21 +1,21 @@
 use std::ops::Mul;
 
-use super::{equals_float, Vec2};
+use super::{equals_float, Float, Vec2};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Mat22 {
-    pub m00: f64,
-    pub m01: f64,
-    pub m10: f64,
-    pub m11: f64,
+    pub m00: Float,
+    pub m01: Float,
+    pub m10: Float,
+    pub m11: Float,
 }
 
 impl Mat22 {
-    pub fn new(m00: f64, m01: f64, m10: f64, m11: f64) -> Self {
+    pub fn new(m00: Float, m01: Float, m10: Float, m11: Float) -> Self {
         Self { m00, m01, m10, m11 }
     }
 
-    pub fn rotation(radian: f64) -> Self {
+    pub fn rotation(radian: Float) -> Self {
         let cos = radian.cos();
         let sin = radian.sin();
         Mat22::new(cos, -sin, sin, cos)
@@ -60,7 +60,7 @@ impl Mul for Mat22 {
     }
 }
 
-impl Mul<Mat22> for f64 {
+impl Mul<Mat22> for Float {
     type Output = Mat22;
 
     fn mul(self, rhs: Mat22) -> Self::Output {
@@ -73,10 +73,10 @@ impl Mul<Mat22> for f64 {
     }
 }
 
-impl Mul<f64> for Mat22 {
+impl Mul<Float> for Mat22 {
     type Output = Mat22;
 
-    fn mul(self, rhs: f64) -> Self::Output {
+    fn mul(self, rhs: Float) -> Self::Output {
         rhs * self
     }
 }

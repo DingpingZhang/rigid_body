@@ -1,14 +1,17 @@
-use super::{Circle, Material, MaterialLike, Orientation, Rectangle, Collider};
-use crate::collide_calculation::{collide_wall_and_circle, collide_wall_and_rectangle};
+use super::{Circle, Collider, Material, MaterialLike, Orientation, Rectangle};
+use crate::{
+    algebra::Float,
+    collide_calculation::{collide_wall_and_circle, collide_wall_and_rectangle},
+};
 
 pub struct Wall {
     material: Material,
-    pub bound: f64,
+    pub bound: Float,
     pub orientation: Orientation,
 }
 
 impl Wall {
-    pub fn new(material: Material, bound: f64, orientation: Orientation) -> Self {
+    pub fn new(material: Material, bound: Float, orientation: Orientation) -> Self {
         Self {
             material,
             bound,

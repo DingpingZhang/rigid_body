@@ -1,23 +1,26 @@
-use super::{Bounded, Circle, Material, MaterialLike, RigidBody, Collider, RigidBodyLike, Wall};
-use crate::collide_calculation::{
-    collide_circle_and_rectangle, collide_rectangle_and_rectange, collide_wall_and_rectangle,
+use super::{Bounded, Circle, Collider, Material, MaterialLike, RigidBody, RigidBodyLike, Wall};
+use crate::{
+    algebra::Float,
+    collide_calculation::{
+        collide_circle_and_rectangle, collide_rectangle_and_rectange, collide_wall_and_rectangle,
+    },
 };
 
 pub struct Rectangle {
     material: Material,
     rigid_body: RigidBody,
-    pub width: f64,
-    pub height: f64,
-    pub angle: f64,
+    pub width: Float,
+    pub height: Float,
+    pub angle: Float,
 }
 
 impl Rectangle {
     pub fn new(
         material: Material,
         rigid_body: RigidBody,
-        width: f64,
-        height: f64,
-        angle: f64,
+        width: Float,
+        height: Float,
+        angle: Float,
     ) -> Self {
         Self {
             material,
@@ -28,29 +31,29 @@ impl Rectangle {
         }
     }
 
-    fn bound_width(&self) -> f64 {
+    fn bound_width(&self) -> Float {
         self.height * self.angle.sin().abs() + self.width * self.angle.cos().abs()
     }
 
-    fn bound_height(&self) -> f64 {
+    fn bound_height(&self) -> Float {
         self.height * self.angle.cos().abs() + self.width * self.angle.sin().abs()
     }
 }
 
 impl Bounded for Rectangle {
-    fn bound_left(&self) -> f64 {
+    fn bound_left(&self) -> Float {
         self.rigid_body.position.x - self.bound_width() / 2.0
     }
 
-    fn bound_top(&self) -> f64 {
+    fn bound_top(&self) -> Float {
         self.rigid_body.position.y + self.bound_height() / 2.0
     }
 
-    fn bound_right(&self) -> f64 {
+    fn bound_right(&self) -> Float {
         self.rigid_body.position.x + self.bound_width() / 2.0
     }
 
-    fn bound_bottom(&self) -> f64 {
+    fn bound_bottom(&self) -> Float {
         self.rigid_body.position.y - self.bound_height() / 2.0
     }
 }

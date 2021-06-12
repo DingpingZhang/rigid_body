@@ -1,19 +1,19 @@
 use std::ops::{Add, Div, Mul, Sub};
 
-use super::equals_float;
+use super::{equals_float, Float};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vec2 {
-    pub x: f64,
-    pub y: f64,
+    pub x: Float,
+    pub y: Float,
 }
 
 impl Vec2 {
-    pub fn new(x: f64, y: f64) -> Self {
+    pub fn new(x: Float, y: Float) -> Self {
         Self { x, y }
     }
 
-    pub fn length_squared(self) -> f64 {
+    pub fn length_squared(self) -> Float {
         self.x * self.x + self.y * self.y
     }
 }
@@ -49,17 +49,17 @@ impl Sub for Vec2 {
 }
 
 impl Mul for Vec2 {
-    type Output = f64;
+    type Output = Float;
 
     fn mul(self, rhs: Self) -> Self::Output {
         self.x * rhs.x + self.y * rhs.y
     }
 }
 
-impl Mul<f64> for Vec2 {
+impl Mul<Float> for Vec2 {
     type Output = Vec2;
 
-    fn mul(self, rhs: f64) -> Self::Output {
+    fn mul(self, rhs: Float) -> Self::Output {
         Self {
             x: self.x * rhs,
             y: self.y * rhs,
@@ -67,10 +67,10 @@ impl Mul<f64> for Vec2 {
     }
 }
 
-impl Div<f64> for Vec2 {
+impl Div<Float> for Vec2 {
     type Output = Vec2;
 
-    fn div(self, rhs: f64) -> Self::Output {
+    fn div(self, rhs: Float) -> Self::Output {
         Self {
             x: self.x / rhs,
             y: self.y / rhs,

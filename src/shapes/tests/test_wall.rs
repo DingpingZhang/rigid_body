@@ -1,8 +1,8 @@
 use rand::random;
 
 use crate::{
-    algebra::{Vec2, FLOADT_TOLERANCE},
-    shapes::{Circle, Material, Orientation, RigidBody, RigidBodyLike, Collider, Wall},
+    algebra::{Float, Vec2, FLOADT_TOLERANCE},
+    shapes::{Circle, Collider, Material, Orientation, RigidBody, RigidBodyLike, Wall},
 };
 
 #[test]
@@ -22,13 +22,13 @@ fn test_collide_circle_and_wall() {
         )
     }
 
-    fn random_f64(a: f64, b: f64) -> f64 {
-        (b - a) * random::<f64>() + a
+    fn random_float(a: Float, b: Float) -> Float {
+        (b - a) * random::<Float>() + a
     }
 
-    fn test_circle_and_wall(wall_bound: f64, wall_orientation: Orientation) {
+    fn test_circle_and_wall(wall_bound: Float, wall_orientation: Orientation) {
         let mut circle = get_circle();
-        let v = Vec2::new(random_f64(-100.0, 100.0), random_f64(-100.0, 100.0));
+        let v = Vec2::new(random_float(-100.0, 100.0), random_float(-100.0, 100.0));
         circle.rigid_body_mut().velocity = v;
         let mut wall = Wall::new(Material { restitution: 1.0 }, wall_bound, wall_orientation);
 

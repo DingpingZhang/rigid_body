@@ -1,16 +1,19 @@
-use super::{Bounded, Material, MaterialLike, RigidBody, RigidBodyLike, Rectangle, Collider, Wall};
-use crate::collide_calculation::{
-    collide_circle_and_circle, collide_circle_and_rectangle, collide_wall_and_circle,
+use super::{Bounded, Collider, Material, MaterialLike, Rectangle, RigidBody, RigidBodyLike, Wall};
+use crate::{
+    algebra::Float,
+    collide_calculation::{
+        collide_circle_and_circle, collide_circle_and_rectangle, collide_wall_and_circle,
+    },
 };
 
 pub struct Circle {
     material: Material,
     rigid_body: RigidBody,
-    pub radius: f64,
+    pub radius: Float,
 }
 
 impl Circle {
-    pub fn new(material: Material, rigid_body: RigidBody, radius: f64) -> Self {
+    pub fn new(material: Material, rigid_body: RigidBody, radius: Float) -> Self {
         Self {
             material,
             rigid_body,
@@ -20,19 +23,19 @@ impl Circle {
 }
 
 impl Bounded for Circle {
-    fn bound_left(&self) -> f64 {
+    fn bound_left(&self) -> Float {
         self.rigid_body.position.x - self.radius
     }
 
-    fn bound_top(&self) -> f64 {
+    fn bound_top(&self) -> Float {
         self.rigid_body.position.y + self.radius
     }
 
-    fn bound_right(&self) -> f64 {
+    fn bound_right(&self) -> Float {
         self.rigid_body.position.x + self.radius
     }
 
-    fn bound_bottom(&self) -> f64 {
+    fn bound_bottom(&self) -> Float {
         self.rigid_body.position.y - self.radius
     }
 }
